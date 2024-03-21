@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { SigUpDto, SignInDto } from './dto/create-auth.dto';
 import * as schema from '../database/schema';
 import { eq } from 'drizzle-orm';
@@ -32,7 +32,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
     if (!(await bcrypt.compare(signInDto.password, user.password))) {
       throw new Error('Invalid Credentials');

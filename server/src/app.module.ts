@@ -6,6 +6,9 @@ import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { SharedModule } from './shared/shared.module';
+import { CategoryModule } from './core/category/category.module';
+import { BudgetModule } from './core/budget/budget.module';
+import { TransactionsModule } from './core/transactions/transactions.module';
 
 @Module({
   imports: [
@@ -14,6 +17,9 @@ import { SharedModule } from './shared/shared.module';
     AuthModule,
     UserModule,
     SharedModule,
+    CategoryModule,
+    BudgetModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

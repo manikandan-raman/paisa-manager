@@ -1,7 +1,7 @@
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import {
   date,
-  integer,
+  decimal,
   pgEnum,
   pgTable,
   text,
@@ -45,7 +45,7 @@ export const transactions = pgTable('transactions', {
   user_id: uuid('user_id').references(() => users.id),
   category_id: uuid('category_id').references(() => categories.id),
   type: transactionTypeEnum('type'),
-  amount: integer('amount').notNull(),
+  amount: decimal('amount', { precision: 2 }).$type<number>().notNull(),
   date: date('date').notNull(),
   time: time('time').notNull(),
   created_at: timestamp('created_at').notNull().defaultNow(),
@@ -59,8 +59,10 @@ export const budget = pgTable('budget', {
   id: uuid('id').primaryKey().defaultRandom(),
   category_id: uuid('category_id').references(() => categories.id),
   name: varchar('name', { length: 255 }).notNull(),
-  month: varchar('month').notNull(),
-  year: varchar('year').notNull(),
+  amount: decimal('amount', { precision: 2 }).$type<number>().notNull(),
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow(),
 });
+
+export type NewBudget = InferInsertModel<typeof budget>;
+export type Budgets = InferSelectModel<typeof budget>;

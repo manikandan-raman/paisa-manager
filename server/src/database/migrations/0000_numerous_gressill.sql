@@ -1,9 +1,14 @@
+DO $$ BEGIN
+ CREATE TYPE "transaction_type" AS ENUM('income', 'expense');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "budget" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"category_id" uuid,
 	"name" varchar(255) NOT NULL,
-	"month" varchar NOT NULL,
-	"year" varchar NOT NULL,
+	"amount" numeric(2) NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
@@ -17,20 +22,23 @@ CREATE TABLE IF NOT EXISTS "categories" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "transaction_type" AS ENUM('income', 'expense');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "transactions" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid,
 	"category_id" uuid,
 	"type" "transaction_type",
-	"amount" integer NOT NULL,
+	"amount" numeric(2) NOT NULL,
 	"date" date NOT NULL,
 	"time" time NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "users" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"name" text NOT NULL,
+	"email" text NOT NULL,
+	"password" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
