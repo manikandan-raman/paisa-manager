@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { BudgetService } from './budget.service';
 import { CreateBudgetDto } from './dto/create-budget.dto';
@@ -19,9 +20,11 @@ import {
 } from '@nestjs/swagger';
 import { BudgetResponseDto } from './dto/budget-response.dto';
 import { MessageResponseDto } from 'src/shared/dto/common-response.dto';
+import JwtAuthGuard from 'src/auth/auth.guard';
 
 @ApiTags('Budget')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller(':user_id/budget')
 export class BudgetController {
   constructor(private readonly budgetService: BudgetService) {}

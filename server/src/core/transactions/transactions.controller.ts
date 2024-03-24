@@ -13,6 +13,7 @@ import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiParam,
@@ -30,6 +31,7 @@ import {
 import JwtAuthGuard from 'src/auth/auth.guard';
 
 @ApiTags('transactions')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('user/:user_id/transactions')
 export class TransactionsController {

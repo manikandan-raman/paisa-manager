@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1711014969217,
-      "tag": "0000_romantic_william_stryker",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1711028590914,
-      "tag": "0001_even_fixer",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1711028681780,
-      "tag": "0002_eager_karma",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1711030311197,
-      "tag": "0003_chubby_dazzler",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1711030580662,
-      "tag": "0004_loose_human_fly",
+      "when": 1711254336696,
+      "tag": "0000_known_kang",
       "breakpoints": true
     }
   ]

@@ -5,3 +5,9 @@ export interface IUser {
   created_at: string;
   updated_at: string;
 }
+
+export interface IError {
+  message: string;
+  error: string;
+  statusCode: number;
+}

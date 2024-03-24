@@ -3,12 +3,10 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { IRegistrationForm, ISignUpResponse } from "@/interfaces/signup";
-import { httpCall } from "@/utils/api-helper";
+import { IRegistrationForm } from "@/interfaces/signup";
+import { signUp } from "@/lib/signup";
 
 export default function SignUp() {
-  const router = useRouter();
   const schema = yup.object({
     name: yup.string().required("please enter name"),
     email: yup
@@ -24,19 +22,11 @@ export default function SignUp() {
       )
       .required("please enter password"),
   });
-  const handleRegistration = async (payload: IRegistrationForm) => {
-    const data = await httpCall.post<ISignUpResponse[]>(
-      "/api/auth/signup",
-      payload
-    );
-    if (data[0].id) {
-      router.push("/signin?isNewUser=true");
-    }
-  };
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<IRegistrationForm>({
     resolver: yupResolver(schema),
   });
@@ -47,7 +37,12 @@ export default function SignUp() {
       </h1>
       <p className="mt-6 text-lg">Sign Up</p>
       <form
-        onSubmit={handleSubmit(handleRegistration)}
+        onSubmit={handleSubmit(async (payload) => {
+          const errors = await signUp(payload);
+          if (errors) {
+            setError("password", { message: errors.message });
+          }
+        })}
         className="mt-8 w-full px-12 sm:px-36 md:px-[25%]"
       >
         <input

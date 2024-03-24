@@ -3,12 +3,11 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { ILoginForm, ILoginResponse } from "@/interfaces/signin";
-import { httpCall } from "@/utils/api-helper";
+import { useSearchParams } from "next/navigation";
+import { ILoginForm } from "@/interfaces/signin";
+import { signIn } from "@/lib/signin";
 
 export default function SignIn() {
-  const router = useRouter();
   const params = useSearchParams();
   const schema = yup.object({
     email: yup
@@ -24,19 +23,12 @@ export default function SignIn() {
       )
       .required("please enter password"),
   });
-  const handleLogin = async (payload: ILoginForm) => {
-    const data = await httpCall.post<ILoginResponse>(
-      "/api/auth/signin",
-      payload
-    );
-    if (data.access_token) {
-      router.push("/");
-    }
-  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<ILoginForm>({
     resolver: yupResolver(schema),
   });
@@ -53,7 +45,12 @@ export default function SignIn() {
       )}
       <p className="mt-8 text-lg">Sign In</p>
       <form
-        onSubmit={handleSubmit(handleLogin)}
+        onSubmit={handleSubmit(async (data) => {
+          const errors = await signIn(data);
+          if (errors) {
+            setError("password", { message: errors.message });
+          }
+        })}
         className="mt-6 w-full px-12 sm:px-36 md:px-[25%]"
       >
         <input

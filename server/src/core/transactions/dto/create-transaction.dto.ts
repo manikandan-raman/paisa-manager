@@ -18,11 +18,6 @@ export enum Transaction_type {
 export class CreateTransactionDto {
   @ApiProperty()
   @IsUUID()
-  @IsOptional()
-  user_id: string;
-
-  @ApiProperty()
-  @IsUUID()
   @IsNotEmpty()
   category_id: string;
 
