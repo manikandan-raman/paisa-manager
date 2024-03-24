@@ -1,20 +1,27 @@
+import { ITransactions } from "@/interfaces/transaction-list";
+
 export default function TransactionItem({
-  isIncome = true,
+  transaction,
 }: {
-  isIncome: boolean;
+  transaction: ITransactions;
 }) {
   return (
     <div className="item flex justify-between items-center">
       <div>
-        <p>Upwork</p>
-        <p className="text-gray-400">Today</p>
+        <p>{transaction.category.name}</p>
+        <p className="text-gray-400">{transaction.date}</p>
       </div>
       <div>
         <p
-          className={isIncome ? `text-primary text-lg` : `text-red-500 text-lg`}
+          className={
+            transaction.type === "income"
+              ? `text-primary text-lg`
+              : `text-red-500 text-lg`
+          }
         >
           {" "}
-          {isIncome ? "+" : "-"} &#8377; 2000.00
+          {transaction.type === "income" ? "+" : "-"} &#8377;{" "}
+          {transaction.amount ?? 0}
         </p>
       </div>
     </div>

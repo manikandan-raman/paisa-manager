@@ -36,6 +36,9 @@ export class TransactionsService {
         eq(transactions.user_id, user_id),
         month ? eq(sql` date_part('month', date)`, month) : undefined,
       ),
+      with: {
+        category: true,
+      },
       limit,
       offset,
       orderBy: [desc(transactions.created_at)],

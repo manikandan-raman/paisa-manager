@@ -34,7 +34,7 @@ export default function SignIn() {
   });
 
   return (
-    <main className="flex w-screen min-h-svh flex-col justify-center items-center">
+    <div className="flex w-full h-full flex-col justify-center items-center">
       <h1 className="mt-8 text-2xl font-semibold text-primary">
         Paisa Manager
       </h1>
@@ -90,6 +90,6 @@ export default function SignIn() {
           Register
         </Link>
       </p>
-    </main>
+    </div>
   );
 }

@@ -1,22 +1,14 @@
-import { ITransactionBalanceResponse } from "@/interfaces/transaction-balance";
-import { httpCall } from "@/utils/api-helper";
+import { getBalance } from "@/lib/get-balance";
 
 export default async function DashboardCard() {
-  const getBalance = async () => {
-    return await httpCall.get<ITransactionBalanceResponse>(
-      "http://localhost:3000/api/user/6c904c8e-b423-42ef-a9b2-a07d97b12b35/transactions/balance"
-    );
-  };
-
   const balance = await getBalance();
-  console.log("insid insid", balance);
   return (
     <div className="card flex flex-col justify-center gap-4 absolute p-4 mx-5 h-56 bg-primaryDark top-28 left-0 right-0 rounded-3xl shadow-sm shadow-gray-200">
       <div className="mt-3 flex justify-between">
         <div>
           <p className="text-md">Total Balance ^</p>
-          <p className="text-3xl font-semibold">
-            &#8377; {balance.total_balance}
+          <p className="text-2xl font-semibold">
+            &#8377; {balance.total_balance ?? 0}
           </p>
         </div>
         <div>
@@ -27,11 +19,15 @@ export default async function DashboardCard() {
         <div className="mt-3 flex justify-between">
           <div>
             <p className="text-md">&uarr; Income</p>
-            <p className="text-xl font-semibold">&#8377; {balance.income}</p>
+            <p className="text-xl font-semibold">
+              &#8377; {balance.income ?? 0}
+            </p>
           </div>
           <div>
             <p className="text-md">&darr; Expense</p>
-            <p className="text-xl font-semibold">&#8377; {balance.expense}</p>
+            <p className="text-xl font-semibold">
+              &#8377; {balance.expense ?? 0}
+            </p>
           </div>
         </div>
       </div>

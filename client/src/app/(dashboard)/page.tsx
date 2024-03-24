@@ -1,12 +1,10 @@
-import CheckAuthorized from "@/components/CheckAuthorized";
-import BottomNavigation from "@/components/BottomNavigation";
 import TransactionsList from "@/components/TransactionList";
 import DashboardCard from "@/components/DashboardCard";
 
 export default async function Home() {
   return (
-    <main className="w-screen h-svh bg-white text-white">
-      <div className="h-[40%] w-full bg-primary rounded-bl-[25%] rounded-br-[25%] relative">
+    <>
+      <div className="h-[40%] w-full bg-primary rounded-bl-[25%] rounded-br-[25%] relative text-white">
         <div className="px-5 pt-6">
           <div>
             <p>Good Afternoon,</p>
@@ -23,7 +21,6 @@ export default async function Home() {
         </div>
         <TransactionsList />
       </div>
-      <BottomNavigation />
-    </main>
+    </>
   );
 }

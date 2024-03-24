@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { EXTERNAL_API_BASEURL } from "./constants";
 
 export const httpCall = {
@@ -12,8 +13,10 @@ export const httpCall = {
     });
     return res;
   },
-  get: async <T>(url: string, token = null): Promise<T> => {
-    const res = await fetch(url, {
+  get: async <T>(url: string): Promise<Response> => {
+    const cookieStore = cookies();
+    const token = cookieStore.get("access_token")?.value;
+    const res = await fetch(EXTERNAL_API_BASEURL + url, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -21,7 +24,6 @@ export const httpCall = {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     });
-    const data: T = await res.json();
-    return data;
+    return res;
   },
 };

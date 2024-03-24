@@ -1,4 +1,4 @@
-import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
+import { InferInsertModel, InferSelectModel, relations } from 'drizzle-orm';
 import {
   date,
   numeric,
@@ -53,6 +53,13 @@ export const transactions = pgTable('transactions', {
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow(),
 });
+
+export const categoryRelations = relations(transactions, ({ one }) => ({
+  category: one(categories, {
+    fields: [transactions.category_id],
+    references: [categories.id],
+  }),
+}));
 
 export type NewTransaction = InferInsertModel<typeof transactions>;
 export type Transactions = InferSelectModel<typeof transactions>;

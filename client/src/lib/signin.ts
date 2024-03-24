@@ -5,13 +5,15 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { IError } from "@/interfaces/common";
 
-export async function signIn(payload: ILoginForm): Promise<IError> {
+export async function signIn(payload: ILoginForm): Promise<IError | void> {
   const res = await httpCall.post<ILoginResponse>("/auth/signin", payload);
-  const data = await res.json();
+  const data: ILoginResponse | IError = await res.json();
   console.log(data);
-  if (data.access_token) {
+  if ("access_token" in data && data.access_token) {
     cookies().set("access_token", data.access_token);
+    cookies().set("current_user_id", data.user.id);
     redirect("/");
+  } else if ("message" in data) {
+    return data;
   }
-  return data;
 }

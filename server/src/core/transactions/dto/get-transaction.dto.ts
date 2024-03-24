@@ -3,16 +3,17 @@ import { Type } from 'class-transformer';
 import { IsNumber, IsOptional } from 'class-validator';
 
 export class GetTransactionQueryParamsDto {
-  @ApiProperty()
+  @ApiProperty({ required: false })
+  @IsOptional()
   month: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsNumber()
   @Type(() => Number)
   @IsOptional()
   limit: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsNumber()
   @Type(() => Number)
   @IsOptional()

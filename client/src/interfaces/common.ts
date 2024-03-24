@@ -11,3 +11,8 @@ export interface IError {
   error: string;
   statusCode: number;
 }
+
+export interface IFilterOptions {
+  limit?: number;
+  offset?: number;
+}
