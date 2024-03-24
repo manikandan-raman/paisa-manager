@@ -1,44 +1,66 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectPGConnection } from 'src/decorators/inject-pg.decorator';
 import { PGDatabase } from 'src/types/db';
 import { NewBudget, budget } from 'src/database/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 @Injectable()
 export class BudgetService {
   constructor(@InjectPGConnection() private db: PGDatabase) {}
 
-  async create(createBudgetDto: NewBudget) {
-    const newBudget = await this.db
-      .insert(budget)
-      .values(createBudgetDto)
-      .returning();
-    return newBudget;
+  async create(user_id: string, createBudgetDto: NewBudget) {
+    createBudgetDto.user_id = user_id;
+    try {
+      const newBudget = await this.db
+        .insert(budget)
+        .values(createBudgetDto)
+        .returning();
+      return newBudget;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
-  async findAll() {
-    const budgets = await this.db.query.budget.findMany();
+  async findAll(user_id: string) {
+    const budgets = await this.db.query.budget.findMany({
+      where: eq(budget.user_id, user_id),
+    });
     return budgets;
   }
 
-  async findOne(id: string) {
+  async findOne(user_id: string, budget_id: string) {
     const singleBudget = await this.db.query.budget.findFirst({
-      where: eq(budget.id, id),
+      where: and(eq(budget.user_id, user_id), eq(budget.id, budget_id)),
     });
+    if (!singleBudget) {
+      throw new NotFoundException(`budget with id: ${budget_id} not found`);
+    }
     return singleBudget;
   }
 
-  async update(id: string, updateBudgetDto: Partial<NewBudget>) {
+  async update(
+    user_id: string,
+    budget_id: string,
+    updateBudgetDto: Partial<NewBudget>,
+  ) {
     const updateBudget = await this.db
       .update(budget)
       .set(updateBudgetDto)
-      .where(eq(budget.id, id))
+      .where(and(eq(budget.user_id, user_id), eq(budget.id, budget_id)))
       .returning();
+    if (!updateBudget) {
+      throw new NotFoundException(`budget with id: ${budget_id} not found`);
+    }
     return updateBudget;
   }
 
-  async remove(id: string) {
-    await this.db.delete(budget).where(eq(budget.id, id));
+  async remove(user_id: string, budget_id: string) {
+    await this.findOne(user_id, budget_id);
+    await this.db.delete(budget).where(eq(budget.id, budget_id));
     return { message: 'budget deleted successfully' };
   }
 }

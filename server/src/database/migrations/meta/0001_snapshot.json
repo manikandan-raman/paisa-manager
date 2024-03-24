@@ -1,6 +1,6 @@
 {
-  "id": "2ae68564-4f40-4491-a73f-c184db51cf25",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "f1102794-d08d-4bbe-8b25-2b2d2e8bf701",
+  "prevId": "2ae68564-4f40-4491-a73f-c184db51cf25",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -20,12 +20,6 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
         },
         "amount": {
           "name": "amount",

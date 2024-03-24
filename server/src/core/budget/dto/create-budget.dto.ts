@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDecimal, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsDecimal, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class CreateBudgetDto {
   @ApiProperty()
@@ -7,12 +8,8 @@ export class CreateBudgetDto {
   category_id: string;
 
   @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @ApiProperty()
   @IsDecimal()
+  @Transform(({ value }) => parseFloat(value).toFixed(2))
   @IsNotEmpty()
   amount: number;
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "budget" ADD CONSTRAINT "category_user" UNIQUE("category_id","user_id");

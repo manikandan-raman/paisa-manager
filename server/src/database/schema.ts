@@ -1,12 +1,13 @@
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import {
   date,
-  decimal,
+  numeric,
   pgEnum,
   pgTable,
   text,
   time,
   timestamp,
+  unique,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
@@ -25,7 +26,6 @@ export type User = InferSelectModel<typeof users>;
 
 export const categories = pgTable('categories', {
   id: uuid('id').primaryKey().defaultRandom(),
-  user_id: uuid('user_id').references(() => users.id),
   name: varchar('name', { length: 255 }).notNull(),
   icon: text('icon'),
   created_at: timestamp('created_at').notNull().defaultNow(),
@@ -45,7 +45,9 @@ export const transactions = pgTable('transactions', {
   user_id: uuid('user_id').references(() => users.id),
   category_id: uuid('category_id').references(() => categories.id),
   type: transactionTypeEnum('type'),
-  amount: decimal('amount', { precision: 2 }).$type<number>().notNull(),
+  amount: numeric('amount', { precision: 10, scale: 2 })
+    .$type<number>()
+    .notNull(),
   date: date('date').notNull(),
   time: time('time').notNull(),
   created_at: timestamp('created_at').notNull().defaultNow(),
@@ -55,14 +57,22 @@ export const transactions = pgTable('transactions', {
 export type NewTransaction = InferInsertModel<typeof transactions>;
 export type Transactions = InferSelectModel<typeof transactions>;
 
-export const budget = pgTable('budget', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  category_id: uuid('category_id').references(() => categories.id),
-  name: varchar('name', { length: 255 }).notNull(),
-  amount: decimal('amount', { precision: 2 }).$type<number>().notNull(),
-  created_at: timestamp('created_at').notNull().defaultNow(),
-  updated_at: timestamp('updated_at').notNull().defaultNow(),
-});
+export const budget = pgTable(
+  'budget',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    category_id: uuid('category_id').references(() => categories.id),
+    user_id: uuid('user_id').references(() => users.id),
+    amount: numeric('amount', { precision: 10, scale: 2 })
+      .$type<number>()
+      .notNull(),
+    created_at: timestamp('created_at').notNull().defaultNow(),
+    updated_at: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    category_user: unique('category_user').on(t.category_id, t.user_id),
+  }),
+);
 
 export type NewBudget = InferInsertModel<typeof budget>;
 export type Budgets = InferSelectModel<typeof budget>;

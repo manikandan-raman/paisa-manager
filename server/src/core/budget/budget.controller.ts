@@ -22,49 +22,76 @@ import { MessageResponseDto } from 'src/shared/dto/common-response.dto';
 
 @ApiTags('Budget')
 @ApiBearerAuth()
-@Controller('budget')
+@Controller(':user_id/budget')
 export class BudgetController {
   constructor(private readonly budgetService: BudgetService) {}
 
   @Post()
+  @ApiParam({
+    type: 'string',
+    name: 'user_id',
+  })
   @ApiCreatedResponse({ type: BudgetResponseDto })
-  create(@Body() createBudgetDto: CreateBudgetDto) {
-    return this.budgetService.create(createBudgetDto);
+  create(
+    @Param('user_id') user_id: string,
+    @Body() createBudgetDto: CreateBudgetDto,
+  ) {
+    return this.budgetService.create(user_id, createBudgetDto);
   }
 
   @Get()
+  @ApiParam({
+    type: 'string',
+    name: 'user_id',
+  })
   @ApiOkResponse({ type: BudgetResponseDto, isArray: true })
-  findAll() {
-    return this.budgetService.findAll();
+  findAll(@Param('user_id') user_id: string) {
+    return this.budgetService.findAll(user_id);
   }
 
   @Get(':id')
   @ApiParam({
     type: 'string',
+    name: 'user_id',
+  })
+  @ApiParam({
+    type: 'string',
     name: 'id',
   })
   @ApiOkResponse({ type: BudgetResponseDto })
-  findOne(@Param('id') id: string) {
-    return this.budgetService.findOne(id);
+  findOne(@Param('user_id') user_id: string, @Param('id') budget_id: string) {
+    return this.budgetService.findOne(user_id, budget_id);
   }
 
   @Patch(':id')
   @ApiParam({
     type: 'string',
+    name: 'user_id',
+  })
+  @ApiParam({
+    type: 'string',
     name: 'id',
   })
   @ApiOkResponse({ type: BudgetResponseDto })
-  update(@Param('id') id: string, @Body() updateBudgetDto: UpdateBudgetDto) {
-    return this.budgetService.update(id, updateBudgetDto);
+  update(
+    @Param('user_id') user_id: string,
+    @Param('id') budget_id: string,
+    @Body() updateBudgetDto: UpdateBudgetDto,
+  ) {
+    return this.budgetService.update(user_id, budget_id, updateBudgetDto);
   }
 
   @Delete(':id')
   @ApiParam({
     type: 'string',
+    name: 'user_id',
+  })
+  @ApiParam({
+    type: 'string',
     name: 'id',
   })
   @ApiOkResponse({ type: MessageResponseDto })
-  remove(@Param('id') id: string) {
-    return this.budgetService.remove(id);
+  remove(@Param('user_id') user_id: string, @Param('id') budget_id: string) {
+    return this.budgetService.remove(user_id, budget_id);
   }
 }

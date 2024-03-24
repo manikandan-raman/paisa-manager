@@ -12,7 +12,7 @@ export class InternalServerExceptionFilter implements ExceptionFilter {
     const context = host.switchToHttp();
     const response = context.getResponse<Response>();
     const status = exception.getStatus();
-    console.log({ inside: 'exc int' });
+    console.log({ inside: 'exc int', exception });
     response
       .status(exception.getStatus())
       .json({ statusCode: status, message: exception.message });

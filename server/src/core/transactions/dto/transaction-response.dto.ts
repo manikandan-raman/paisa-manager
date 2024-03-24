@@ -29,3 +29,14 @@ export class TransactionResponseDto {
   @ApiProperty({ enum: Transaction_type })
   type: Transaction_type;
 }
+
+export class TransactionBalanceResponseDto {
+  @ApiProperty()
+  total_balance: number;
+
+  @ApiProperty()
+  income: number;
+
+  @ApiProperty()
+  expense: number;
+}

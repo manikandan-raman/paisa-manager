@@ -1,6 +1,6 @@
 {
-  "id": "2ae68564-4f40-4491-a73f-c184db51cf25",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "1cc94f9c-8245-42d2-92d9-30ab0a005359",
+  "prevId": "9b336325-9a77-4bc0-88c1-f0eff7d95569",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -21,15 +21,15 @@
           "primaryKey": false,
           "notNull": false
         },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "amount": {
           "name": "amount",
-          "type": "numeric",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
           "notNull": true
         },
@@ -56,6 +56,19 @@
           "tableTo": "categories",
           "columnsFrom": [
             "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "budget_user_id_users_id_fk": {
+          "name": "budget_user_id_users_id_fk",
+          "tableFrom": "budget",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -141,7 +154,7 @@
         },
         "amount": {
           "name": "amount",
-          "type": "numeric",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
           "notNull": true
         },

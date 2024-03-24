@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectPGConnection } from 'src/decorators/inject-pg.decorator';
 import { PGDatabase } from 'src/types/db';
 import { NewCategory, categories, Categories } from 'src/database/schema';
@@ -8,12 +12,16 @@ import { eq } from 'drizzle-orm';
 export class CategoryService {
   constructor(@InjectPGConnection() private db: PGDatabase) {}
 
-  async create(createCategoryDto: NewCategory): Promise<Categories> {
-    const category = await this.db
-      .insert(categories)
-      .values(createCategoryDto)
-      .returning()[0];
-    return category;
+  async create(createCategoryDto: NewCategory) {
+    try {
+      const category = await this.db
+        .insert(categories)
+        .values(createCategoryDto)
+        .returning();
+      return category;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async findAll() {
@@ -22,25 +30,29 @@ export class CategoryService {
   }
 
   async findOne(id: string): Promise<Categories> {
-    const allCategories = await this.db.query.categories.findFirst({
+    const singleCategory = await this.db.query.categories.findFirst({
       where: eq(categories.id, id),
     });
-    return allCategories;
+    if (!singleCategory) {
+      throw new NotFoundException(`category with id: ${id} not found`);
+    }
+    return singleCategory;
   }
 
-  async update(
-    id: string,
-    updateCategoryDto: Partial<NewCategory>,
-  ): Promise<Categories> {
+  async update(id: string, updateCategoryDto: Partial<NewCategory>) {
     const category = await this.db
       .update(categories)
       .set(updateCategoryDto)
       .where(eq(categories.id, id))
-      .returning()[0];
+      .returning();
+    if (!category) {
+      throw new NotFoundException(`category with id: ${id} not found`);
+    }
     return category;
   }
 
   async remove(id: string) {
+    await this.findOne(id);
     await this.db.delete(categories).where(eq(categories.id, id));
     return { message: 'category deleted successfully' };
   }

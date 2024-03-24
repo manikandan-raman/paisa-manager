@@ -3,7 +3,7 @@ import BottomNavigation from "@/components/BottomNavigation";
 import TransactionsList from "@/components/TransactionList";
 import DashboardCard from "@/components/DashboardCard";
 
-export default function Home() {
+export default async function Home() {
   return (
     <CheckAuthorized>
       <main className="w-screen h-svh bg-white text-white">

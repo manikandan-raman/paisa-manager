@@ -12,4 +12,16 @@ export const httpCall = {
     console.log(data);
     return data;
   },
+  get: async <T>(url: string, token = null): Promise<T> => {
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+    const data: T = await res.json();
+    return data;
+  },
 };

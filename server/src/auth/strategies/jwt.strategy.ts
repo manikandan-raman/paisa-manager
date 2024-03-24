@@ -19,10 +19,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(user_id: string) {
+  async validate(user_id: Partial<schema.NewUser>) {
     return this.db
       .select()
       .from(schema.users)
-      .where(eq(schema.users.id, user_id));
+      .where(eq(schema.users.id, user_id.id));
   }
 }
