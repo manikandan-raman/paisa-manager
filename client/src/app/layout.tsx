@@ -16,6 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="../../public/manifest.json" />
+      </head>
       <body className={inter.className}>
         <main className="w-screen h-svh bg-white">{children}</main>
       </body>

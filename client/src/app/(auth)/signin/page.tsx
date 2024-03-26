@@ -3,12 +3,12 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import { ILoginForm } from "@/interfaces/signin";
 import { signIn } from "@/lib/signin";
 
 export default function SignIn() {
-  const params = useSearchParams();
+  // const params = useSearchParams();
   const schema = yup.object({
     email: yup
       .string()
@@ -38,11 +38,11 @@ export default function SignIn() {
       <h1 className="mt-8 text-2xl font-semibold text-primary">
         Paisa Manager
       </h1>
-      {params.get("isNewUser") && (
-        <p className="mt-4 p-2 bg-primary text-white">
-          Registration Success!!!, Login Now
-        </p>
-      )}
+      {/* {params.get("isNewUser") && (
+          <p className="mt-4 p-2 bg-primary text-white">
+            Registration Success!!!, Login Now
+          </p>
+        )} */}
       <p className="mt-8 text-lg">Sign In</p>
       <form
         onSubmit={handleSubmit(async (data) => {

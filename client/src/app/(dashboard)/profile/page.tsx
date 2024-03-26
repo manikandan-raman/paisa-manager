@@ -3,6 +3,7 @@ import { ShoppingSVG } from "../../../../public/shopping";
 import { SettingsSVG } from "../../../../public/settings";
 import { LogoutSVG } from "../../../../public/logout";
 import { useState } from "react";
+import { signOut } from "@/lib/signout";
 
 export default function Profile() {
   const [bottomPosition, setBottomPosition] = useState("-bottom-72");
@@ -42,8 +43,13 @@ export default function Profile() {
         <p className="font-bold text-center pt-6">Logout</p>
         <p className="text-center">Are you sure do you wanna logout?</p>
         <div className="flex gap-2 p-3">
-          <button className="w-1/2 p-2 bg-gray-200">No</button>
-          <button className="w-1/2 py-2 bg-primary text-white rounded-lg">
+          <button onClick={handleLogout} className="w-1/2 p-2 bg-gray-200">
+            No
+          </button>
+          <button
+            onClick={async () => await signOut()}
+            className="w-1/2 py-2 bg-primary text-white rounded-lg"
+          >
             Yes
           </button>
         </div>
