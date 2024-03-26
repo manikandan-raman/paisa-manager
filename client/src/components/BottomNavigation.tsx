@@ -10,7 +10,7 @@ import { useState } from "react";
 export default function BottomNavigation() {
   const [currentPage, setCurrentPage] = useState("home");
   return (
-    <div className="relative h-[10%] flex items-start w-full">
+    <div className="bottom-navigation relative h-[10%] flex items-center w-full">
       <div className="w-[50%] mr-5 flex justify-around gap-2 items-center">
         <Link onClick={() => setCurrentPage("home")} href="/">
           <HomeSVG
@@ -28,7 +28,9 @@ export default function BottomNavigation() {
           />
         </Link>
       </div>
-      <AddSVG className="absolute cursor-pointer left-44 -top-4" />
+      <Link onClick={() => setCurrentPage("")} href="/add-transaction">
+        <AddSVG className="absolute cursor-pointer left-44 -top-4" />
+      </Link>
       <div className="w-[50%] ml-20 flex justify-around items-end">
         <Link onClick={() => setCurrentPage("budget")} href="/budget">
           <BudgetSVG fill={currentPage === "budget" ? "#429690" : undefined} />

@@ -10,21 +10,15 @@ export const metadata: Metadata = {
   description: "Home Page",
 };
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <main className="w-screen h-svh bg-white ">
-          {children}
-          <div className="pb-1">
-            <BottomNavigation />
-          </div>
-        </main>
-      </body>
-    </html>
+    <section className="w-screen h-svh bg-white ">
+      {children}
+      <BottomNavigation />
+    </section>
   );
 }

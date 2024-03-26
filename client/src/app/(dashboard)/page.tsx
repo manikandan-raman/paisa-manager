@@ -14,12 +14,12 @@ export default async function Home() {
         </div>
         <DashboardCard />
       </div>
-      <div className="h-[50%] text-black pt-20 px-5 z-2">
+      <div className="h-[50%] text-black pt-16 px-5 z-2">
         <div className="flex justify-between">
           <p className="font-semibold text-lg">Transactions History</p>
           <p>See all</p>
         </div>
-        <TransactionsList />
+        <TransactionsList limit={3} offset={0} />
       </div>
     </>
   );

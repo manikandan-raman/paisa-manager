@@ -5,7 +5,6 @@ import {
   pgEnum,
   pgTable,
   text,
-  time,
   timestamp,
   unique,
   uuid,
@@ -48,8 +47,8 @@ export const transactions = pgTable('transactions', {
   amount: numeric('amount', { precision: 10, scale: 2 })
     .$type<number>()
     .notNull(),
+  description: text('description'),
   date: date('date').notNull(),
-  time: time('time').notNull(),
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow(),
 });

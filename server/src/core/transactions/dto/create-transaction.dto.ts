@@ -32,7 +32,8 @@ export class CreateTransactionDto {
 
   @ApiProperty()
   @IsString()
-  time: string;
+  @IsOptional()
+  description: string;
 
   @ApiProperty({ enum: Transaction_type })
   @IsEnum(Transaction_type)

@@ -11,10 +11,17 @@ export interface ITransactions {
   user_id: string;
   category_id: string;
   type: string;
+  description: string;
   amount: string;
   date: string;
-  time: string;
   category: ICategory;
   created_at: string;
   updated_at: string;
+}
+
+export interface ITransactionForm {
+  category_id: string;
+  amount: number;
+  date: Date;
+  type: "income" | "expense";
 }

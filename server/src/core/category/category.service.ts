@@ -6,7 +6,7 @@ import {
 import { InjectPGConnection } from 'src/decorators/inject-pg.decorator';
 import { PGDatabase } from 'src/types/db';
 import { NewCategory, categories, Categories } from 'src/database/schema';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
 @Injectable()
 export class CategoryService {
@@ -25,7 +25,9 @@ export class CategoryService {
   }
 
   async findAll() {
-    const categories = await this.db.query.categories.findMany();
+    const categories = await this.db.query.categories.findMany({
+      orderBy: sql`case when name = 'Others' then 1 else 0 end,name asc`,
+    });
     return categories;
   }
 
